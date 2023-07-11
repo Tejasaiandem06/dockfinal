@@ -15,7 +15,6 @@ COPY . ./
 
 USER tj
 
-RUN /home/tj/.dotnet
 
 RUN dotnet restore
 
