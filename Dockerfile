@@ -20,10 +20,13 @@ RUN dotnet restore
 
 RUN dotnet build "dotnet6.csproj" -c Release
 
-RUN dotnet publish "dotnet6.csproj" -c Release -o publish
+RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 
-RUN useradd -ms /bin/bash tj
+WORKDIR /app
+
+COPY --from=build /app/publish .
+
 EXPOSE 80
-CMD ["dotnet","run"]
+ENTRYPOINT ["dotnet", "dotnet6.dll"]
