@@ -15,7 +15,7 @@ COPY . ./
 
 USER tj
 
-
+RUN mkdir -p /home/tj/.dotnet/tools
 RUN dotnet restore
 
 RUN dotnet build "dotnet6.csproj" -c Release
