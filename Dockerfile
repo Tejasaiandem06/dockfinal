@@ -16,6 +16,8 @@ RUN chown -R tj:tj /app
 
 USER tj
 
+RUN mkdir /home/tj/.dotnet
+
 RUN dotnet restore
 
 RUN dotnet build "dotnet6.csproj" -c Release
