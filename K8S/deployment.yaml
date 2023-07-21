@@ -1,21 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: docker
+  name: dockfinal-dotnetdemo-deployment
+  namespace: tj
   labels:
-    app: myapp
+    app: dockfinal-dotnetdemo
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: myapp
+      app: dockfinal-dotnetdemo
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
   template:
     metadata:
       labels:
-        app: myapp
+        app: dockfinal-dotnetdemo
     spec:
+      initContainers:
+      - name: init-setup
+        image: busybox:latest
+        command: ['sh', '-c', 'ls; pwd; sleep 10']
+        envFrom:
+        - configMapRef:
+            name: dockfinal-dotnetdemo-deployment
       containers:
-      - name: dockerdep-10-app
-        image: tejasaiandem/kubernetes
+      - name: dockfinal-dotnetdemo
+        image: newcontainerforaks.azurecr.io/dockfinal-dotnetdemo:latest
         ports:
-        - containerPort: 80
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 8
+          periodSeconds: 10
+          failureThreshold: 3  # Corrected field name
+          successThreshold: 1  # Corrected field name
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        env:
+        - name: dockfinal-dotnetdemo-deployment
+          valueFrom:
+            configMapKeyRef:
+              key: DB_HOST
+              name: dockfinal-dotnetdemo-deployment
