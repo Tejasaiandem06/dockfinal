@@ -29,7 +29,7 @@ spec:
             name: dockfinal-dotnetdemo-deployment
       containers:
       - name: dockfinal-dotnetdemo
-        image: newcontainerforaks.azurecr.io/dockfinal-dotnetdemo:latest
+        image: dockfinal-dotnetdemo:latest
         ports:
         - containerPort: 5000
         livenessProbe:
