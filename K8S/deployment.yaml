@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dockfinal-dotnetdemo-deployment
+  name: tejasaiandem/kubernetes-deployment
   namespace: tj
   labels:
-    app: dockfinal-dotnetdemo
+    app: tejasaiandem/kubernetes
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: dockfinal-dotnetdemo
+      app: tejasaiandem/kubernetes
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: dockfinal-dotnetdemo
+        app: tejasaiandem/kubernetes
     spec:
       initContainers:
       - name: init-setup
@@ -26,10 +26,10 @@ spec:
         command: ['sh', '-c', 'ls; pwd; sleep 10']
         envFrom:
         - configMapRef:
-            name: dockfinal-dotnetdemo-deployment
+            name: tejasaiandem/kubernetes-deployment
       containers:
-      - name: dockfinal-dotnetdemo
-        image: dockfinal-dotnetdemo:latest
+      - name: tejasaiandem/kubernetes
+        image: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
         ports:
         - containerPort: 5000
         livenessProbe:
@@ -47,8 +47,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 5
         env:
-        - name: dockfinal-dotnetdemo-deployment
+        - name: tejasaiandem/kubernetes-deployment
           valueFrom:
             configMapKeyRef:
               key: DB_HOST
-              name: dockfinal-dotnetdemo-deployment
+              name: tejasaiandem/kubernetes-deployment
