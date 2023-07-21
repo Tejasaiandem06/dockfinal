@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tejasaiandem/kubernetes-deployment
+  name: tejasaiandem-kubernetes-deployment
   namespace: tj
   labels:
-    app: tejasaiandem/kubernetes
+    app: tejasaiandem-kubernetes
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tejasaiandem/kubernetes
+      app: tejasaiandem-kubernetes
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: tejasaiandem/kubernetes
+        app: tejasaiandem-kubernetes
     spec:
       initContainers:
       - name: init-setup
@@ -26,9 +26,9 @@ spec:
         command: ['sh', '-c', 'ls; pwd; sleep 10']
         envFrom:
         - configMapRef:
-            name: tejasaiandem/kubernetes-deployment
+            name: tejasaiandem-kubernetes-deployment
       containers:
-      - name: tejasaiandem/kubernetes
+      - name: tejasaiandem-kubernetes
         image: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
         ports:
         - containerPort: 5000
@@ -47,8 +47,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 5
         env:
-        - name: tejasaiandem/kubernetes-deployment
+        - name: tejasaiandem-kubernetes-deployment
           valueFrom:
             configMapKeyRef:
               key: DB_HOST
-              name: tejasaiandem/kubernetes-deployment
+              name: tejasaiandem-kubernetes-deployment
