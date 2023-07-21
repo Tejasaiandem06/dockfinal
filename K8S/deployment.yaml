@@ -35,15 +35,15 @@ spec:
         livenessProbe:
           httpGet:
             path: /_status/healthz
-            port: 5000   # Corrected port to match the containerPort
+            port: 5000
           initialDelaySeconds: 8
           periodSeconds: 10
-          failureThreshold: 3  # Corrected field name
-          successThreshold: 1  # Corrected field name
+          failureThreshold: 3
+          successThreshold: 1
         readinessProbe:
           httpGet:
             path: /readiness
-            port: 5000   # Corrected port to match the containerPort
+            port: 5000
           initialDelaySeconds: 15
           periodSeconds: 5
         env:
