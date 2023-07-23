@@ -27,11 +27,11 @@ spec:
               - matchExpressions:
                   - key: environment
                     operator: In
-                    values: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
+                    values: 
                       - production
       containers:
         - name: tejasaiandem-kubernetes
-          image: 
+          image: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
           ports:
             - containerPort: 5000
           livenessProbe:
