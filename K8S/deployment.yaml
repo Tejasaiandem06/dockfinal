@@ -20,35 +20,37 @@ spec:
       labels:
         app: tejasaiandem-kubernetes
     spec:
-      initContainers:
-      - name: init-setup
-        image: busybox:latest
-        command: ['sh', '-c', 'ls; pwd; sleep 10']
-        envFrom:
-        - configMapRef:
-            name: tejasaiandem-kubernetes-deployment
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: environment
+                    operator: In
+                    values: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
+                      - production
       containers:
-      - name: tejasaiandem-kubernetes
-        image: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
-        ports:
-        - containerPort: 5000
-        livenessProbe:
-          httpGet:
-            path: /_status/healthz
-            port: 5000
-          initialDelaySeconds: 8
-          periodSeconds: 10
-          failureThreshold: 3
-          successThreshold: 1
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 5000
-          initialDelaySeconds: 15
-          periodSeconds: 5
-        env:
-        - name: tejasaiandem-kubernetes-deployment
-          valueFrom:
-            configMapKeyRef:
-              key: DB_HOST
-              name: tejasaiandem-kubernetes-deployment
+        - name: tejasaiandem-kubernetes
+          image: 
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /_status/healthz
+              port: 5000
+            initialDelaySeconds: 8
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: tejasaiandem-kubernetes-deployment
+                  key: DB_HOST
