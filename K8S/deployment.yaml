@@ -54,3 +54,7 @@ spec:
                 configMapKeyRef:
                   name: tejasaiandem-kubernetes-deployment
                   key: DB_HOST
+      tolerations:  
+        - key: "special"
+          operator: "Exists"
+          effect: "NoSchedule"
