@@ -1,4 +1,4 @@
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: tejasaiandem-kubernetes-pdb
@@ -8,3 +8,4 @@ spec:
   selector:
     matchLabels:
       app: tejasaiandem-kubernetes
+  maxUnavailable: 1
