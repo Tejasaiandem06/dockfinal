@@ -27,10 +27,19 @@ spec:
               - matchExpressions:
                   - key: environment
                     operator: In
-                    values: 
+                    values:
                       - production
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - tejasaiandem-kubernetes
+              topologyKey: "kubernetes.io/hostname"
       containers:
-        - name: tejasaiandem-kubernetes
+        - name: new-docker-app
           image: newcontainerforaks.azurecr.io/tejasaiandem/kubernetes:latest
           ports:
             - containerPort: 5000
